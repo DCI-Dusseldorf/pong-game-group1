@@ -5,6 +5,8 @@ body {
     margin: 0px;
     padding: 0px;
     background-image: url('./image/playa.jpg');
+    background-size: 100% 100%;
+    background-attachment: fixed;
 }
 
 .ball {
@@ -13,6 +15,8 @@ body {
     position: absolute;
     z-index: 1;
     overflow: hidden;
+    top: 50%;
+    left: 50%;
 }
 
 .ball:before {
@@ -53,7 +57,7 @@ body {
 .left-goalkeeper {
     float: left;
     margin-left: 5px;
-    background-color: yellow;
+    background-color: rgb(133, 133, 39);
 }
 
 .right-goalkeeper {
@@ -123,45 +127,4 @@ body {
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
     text-align: center;
-}
-
-.player-control {
-    height: 50px;
-    width: 50px;
-    margin: 10px;
-    background: rgb(85, 30, 30);
-    box-shadow: 3px 3px rgb(202, 202, 202);
-    line-height: 50px;
-    font-size: 30px;
-    font-family: sans-serif;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.player-control:first-child:active {
-    box-shadow: none;
-    margin-top: 13px;
-    margin-right: -3px;
-    margin-bottom: -3px;
-    margin-left: 13px;
-}
-
-.player-control:not(:first-child):active {
-    box-shadow: none;
-    margin-top: 13px;
-    margin-right: 7px;
-    margin-bottom: 7px;
-    margin-left: 13px;
-}
-
-.left {
-    float: left;
-}
-
-.right {
-    float: right;
-}
-
-.center {
-    float: none;
 }
