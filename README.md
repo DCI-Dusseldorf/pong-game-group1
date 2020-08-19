@@ -1,5 +1,3 @@
-# pong-game-group1
-
 # Pong Game Logics
 
 ## Elements

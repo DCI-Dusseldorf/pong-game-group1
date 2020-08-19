@@ -17,6 +17,7 @@ body {
     overflow: hidden;
     top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .ball:before {
@@ -29,41 +30,27 @@ body {
     -webkit-transform: none;
 }
 
-.ball.right-down:before {
-    -webkit-transform: rotateZ(45deg);
-}
-
-.ball.right-up:before {
-    -webkit-transform: rotateZ(-45deg);
-}
-
-.ball.left-down:before {
-    -webkit-transform: rotateZ(135deg) rotateX(180deg);
-}
-
-.ball.left-up:before {
-    -webkit-transform: rotateZ(-135deg) rotateX(180deg);
-}
-
 .goalkeeper {
     width: 20px;
     height: 30%;
     position: relative;
-    top: 35%;
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 5px;
+    transform: translateY(-50%);
 }
 
 .left-goalkeeper {
     float: left;
     margin-left: 5px;
     background-color: rgb(133, 133, 39);
+    top: 50%;
 }
 
 .right-goalkeeper {
     float: right;
     margin-right: 5px;
     background-color: brown;
+    top: 50%;
 }
 
 .scores {
@@ -113,18 +100,4 @@ body {
 
 #score {
     display: none;
-}
-
-.container {
-    width: 400px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -200px;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
-    text-align: center;
 }

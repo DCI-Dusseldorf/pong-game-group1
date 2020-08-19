@@ -1,138 +1,73 @@
-// 
-var paddleLeft = document.getElementById('left-paddle');
-var paddleRight = document.getElementById('right-paddle');
-var ball = document.getElementById('ball');
+const leftGoalkeeper = document.querySelector(".left-goalkeeper");
+const rightGoalkeeper = document.querySelector(".right-goalkeeper");
+const ball = document.querySelector(".ball");
 
-var paddleLeftTop = 0;
-var paddleRightTop = 0;
-var paddleLeftHeight = 200;
-var paddleRightHeight = 200;
+let positionLeftGK = window.innerHeight / 2;
+let positionRightGK = window.innerHeight / 2;
+let stepLeftGK = 0;    // 0 is stop, -1 is up, 1 is down;
+let stepRightGK = 0;
 
-var paddleRightDirection = 0;
-var paddleRightTimer;
+document.onkeydown = function(event) {
+    switch (event.code) {
+        case "KeyW":
+            stepLeftGK = -1;
+            break;
+        case "KeyS":
+            stepLeftGK = 1;
+            break;
+        case "ArrowUp":
+            stepRightGK = -1;
+            break;
+        case "ArrowDown":
+            stepRightGK = 1;
+            break;
+    }
+};
 
-var paddleLeftDirection = 0;
-var paddleLeftTimer;
+document.onkeyup = function(event) {
+    switch (event.code) {
+        case "KeyW":
+            stepLeftGK = 0;
+            break;
+        case "KeyS":
+            stepLeftGK = 0;
+            break;
+        case "ArrowUp":
+            stepRightGK = 0;
+            break;
+        case "ArrowDown":
+            stepRightGK = 0;
+            break;
+    }
+};
 
-paddleLeft.style.top = 0;
-paddleRight.style.top = 0;
+function goalkeepersPositions() {
+    const minPosition = window.innerHeight * 0.15;
+    const maxPosition = window.innerHeight * 0.85;
 
-var ballXPos = 50;
-var ballYPos = 50;
-var ballXDir = 5;
-var ballYDir = 5;
-var ballWidth = 20;
-var ballHeight = 20;
+    if (stepLeftGK !== 0) {
+        positionLeftGK = positionLeftGK + stepLeftGK * 5;
 
-var leftScoreDisplay = document.getElementById('left-score');
-var rightScoreDisplay = document.getElementById('right-score');
-var leftScore = 0;
-var rightScore = 0;
+        if (positionLeftGK < minPosition) {
+            positionLeftGK = minPosition;
+        } else if (positionLeftGK > maxPosition) {
+            positionLeftGK = maxPosition;
+        }
 
-function updateScoreDisplay() {
-    leftScoreDisplay.innerHTML = leftScore;
-    rightScoreDisplay.innerHTML = rightScore;
+        leftGoalkeeper.style.top = positionLeftGK + "px";
+    }
+
+    if (stepRightGK !== 0) {
+        positionRightGK = positionRightGK + stepRightGK * 5;
+
+        if (positionRightGK < minPosition) {
+            positionRightGK = minPosition;
+        } else if (positionRightGK > maxPosition) {
+            positionRightGK = maxPosition;
+        }
+
+        rightGoalkeeper.style.top = positionRightGK + "px";
+    }
 }
 
-function moveBall() {
-    var newBallXPos = ballXPos + ballXDir;
-    var newBallYPos = ballYPos + ballYDir;
-
-    if (newBallXPos + ballWidth > window.innerWidth) {
-        ballXDir = -Math.abs(ballXDir);
-    }
-    if (newBallYPos + ballHeight > window.innerHeight) {
-        ballYDir = -Math.abs(ballYDir);
-    }
-    if (newBallXPos < 10) {
-        ballXDir = Math.abs(ballXDir);
-    }
-    if (newBallYPos < 10) {
-        ballYDir = Math.abs(ballYDir);
-    }
-
-    ballXPos += ballXDir;
-    ballYPos += ballYDir;
-
-    if (ballXPos < 30 &&
-        (ballYPos + 30 < paddleLeftTop ||
-            ballYPos > paddleLeftTop + paddleLeftHeight)) {
-        rightScore += 1;
-        updateScoreDisplay();
-    }
-    if (ballXPos + 30 > window.innerWidth - 30 &&
-        (ballYPos + 30 < paddleRightTop ||
-            ballYPos > paddleRightTop + paddleRightHeight)) {
-        leftScore += 1;
-        updateScoreDisplay();
-    }
-    ball.style.top = ballYPos + 'px';
-    ball.style.left = ballXPos + 'px';
-}
-
-function moveRightPaddle() {
-    paddleRightTop += paddleRightDirection;
-    paddleRight.style.top = paddleRightTop + 'px';
-}
-
-function moveLeftPaddle() {
-    paddleLeftTop += paddleLeftDirection;
-    paddleLeft.style.top = paddleLeftTop + 'px';
-}
-
-setInterval(moveBall, 5);
-
-setInterval(function() {
-    if (ballXDir < 50) ballXDir *= 1.1;
-    if (ballYDir < 50) ballYDir *= 1.1;
-}, 10000)
-
-document.addEventListener('keydown', function(evt) {
-    switch (evt.code) {
-        case 'ArrowDown':
-            if (!paddleRightTimer) {
-                paddleRightDirection = 10;
-                paddleRightTimer = setInterval(moveRightPaddle, 10);
-            }
-            break;
-
-        case 'ArrowUp':
-            if (!paddleRightTimer) {
-                paddleRightDirection = -10;
-                paddleRightTimer = setInterval(moveRightPaddle, 10);
-            }
-            break;
-
-        case 'KeyS':
-            if (!paddleLeftTimer) {
-                paddleLeftDirection = 10;
-                paddleLeftTimer = setInterval(moveLeftPaddle, 10);
-            }
-            break;
-
-        case 'KeyW':
-            if (!paddleLeftTimer) {
-                paddleLeftDirection = -10;
-                paddleLeftTimer = setInterval(moveLeftPaddle, 10);
-            }
-            break;
-    }
-    console.log(evt);
-})
-
-document.addEventListener('keyup', function(evt) {
-    switch (evt.code) {
-        case 'ArrowDown':
-        case 'ArrowUp':
-            clearInterval(paddleRightTimer);
-            paddleRightTimer = null;
-            break;
-
-        case 'KeyS':
-        case 'KeyW':
-            clearInterval(paddleLeftTimer);
-            paddleLeftTimer = null;
-            break;
-    }
-    console.log(evt);
-})
+setInterval(goalkeepersPositions, 1000/60);
