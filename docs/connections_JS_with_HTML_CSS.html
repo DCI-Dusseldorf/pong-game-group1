@@ -1,0 +1,52 @@
+<!--  Connection JS with HTML and CSS
+
+"The W3C Document Object Model (DOM) is a platform and language-neutral interface 
+that allows programs and scripts to dynamically access and update the content, structure, and style of a document."
+
+to get access in JavaScript we should use "document" 
+
+examples:
+document.getElementById(id)
+document.getElementsByTagName(name)
+document.getElementsByClassName(name)
+
+
+worked full example:
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connections JS with HTML and CSS</title>
+  </head>
+
+  <body>
+    <p id="myId" class="myClass">Some text here</p>
+    <button onclick="changeColor('blue');">blue</button>
+    <button onclick="changeColor('red');">red</button>
+  </body>
+
+  <style>
+    .myClass {
+      color: green;
+    }
+  </style>
+
+  <script>
+    console.log("elem");
+    console.log(document.getElementById("myId"));
+
+    function changeColor(newColor) {
+      var elem = document.getElementById("myId");
+      console.log("elem");
+      console.log(elem);
+
+      elem.style.fontSize = "40px";
+
+      console.log("elem.style.color");
+      console.log(elem.style.color);
+    }
+  </script>
+</html>
