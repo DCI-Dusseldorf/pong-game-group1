@@ -1,0 +1,170 @@
+<!Doctype html>
+<html>
+	<title>
+		Animation Practice
+	</title>
+	
+	<style>
+		#Container
+		{
+			position: relative;
+			background-color: black;
+			width: 900px;
+			height: 400px;
+		}
+		
+		#P1
+		{
+			position: absolute;
+			top: 165.5px;
+			left: 8px;
+			width: 2px;
+			height: 69px;
+			background-color: white;
+		}
+		
+		#P2
+		{
+			position: absolute;
+			top: 165.5px;
+			left: 892px;
+			width: 2px;
+			height: 69px;
+			background-color: white;
+		}
+		
+		#Ball
+		{
+			position: absolute;
+			left: 400px;
+			top: 200px;
+			width: 2px;
+			height: 2px;
+			background-color: white;
+		}
+	</style>
+	
+	<body onload = "startGame()">
+		<div id = "Container" >
+			<div id = "P1">
+			</div>
+			
+			<div id = "Ball">
+			</div>
+			
+			<div id = "P2">
+			</div>
+		</div>
+		
+		<script>
+			function startGame()
+			{
+				var p1 = document.getElementById("P1");
+				var p1Ypos = 0;
+				
+				var p2 = document.getElementById("P2");
+				var p2Ypos = 0;
+				
+				var ball = document.getElementById("Ball");
+				var ballYpos = 0;
+				var ballXpos = 0;
+				
+				var container = document.getElementById("Container");
+				var xstep = 1;
+				var ystep = 2;
+				xDistBall = 898;
+				yDist = 398;
+				
+				
+				
+				function bounceBall()
+				{
+					
+					if(xDistBall === 0)
+					{
+						xstep *= -1;
+						xDistBall = 898;
+					}
+					
+					if(yDist === 0)
+					{
+						ystep *= -1;
+						yDist = 398;
+					}
+					
+					if(xDistBall === 10 && ballYpos >= p2.offsetTop && ballYpos <= (p2.offsetTop + 69))
+					{
+						xstep *= -1;
+						xDistBall = 898;
+					}
+					
+					if(xDistBall === 10 && ballYpos >= p1.offsetTop && ballYpos <= (p1.offsetTop + 69))
+					{
+						xstep *= -1;
+						xDistBall = 898;
+					}
+					
+					ballXpos += xstep;
+					xDistBall -= 1;
+					ballYpos += ystep;
+					yDist -= 2;
+					
+					ball.style.top = ballYpos +'px';
+					ball.style.left = ballXpos +'px';
+				}
+				
+				function implementP2Controls()
+				{
+					p2Ypos = ballYpos - 34.5;
+					p2.style.top = p2Ypos + 'px';
+					
+					if(ballYpos <= 34.5)
+					{
+						p2Ypos++;
+					}
+				}
+				
+				function implementP1Controls()
+				{
+					/*document.addEventListener('keydown', function(event)
+													{
+														if(event.keyCode == 38)
+														{
+															setTimeout(setInterval(function()
+																		{
+																			p1Ypos -= 2;
+																			p1.style.top = (p1Ypos + 165.5 ) + 'px';
+																		}, 0.5), 0.25);
+														}
+														
+														if(event.keyCode == 40)
+														{
+															setTimeout(setInterval(function()
+																		{
+																			p1Ypos += 2;
+																			p1.style.top = (p1Ypos + 165.5 ) + 'px';
+																		}, 0.5), 0.25);
+														}
+													});*/
+													
+					container.addEventListener('mouseover', function(event)
+															{
+																console.log(event.clientY + "     " + p1Ypos);
+																p1Ypos = (event.clientY - 165.5);
+																p1.style.top = p1Ypos + 'px';
+															});
+				}
+				
+				//implementP1Controls();
+				
+				setInterval(function()
+							{
+								bounceBall();
+								implementP1Controls();
+								implementP2Controls();
+							}, 0.5);
+							
+			}
+		</script>
+	</body>
+</html>
