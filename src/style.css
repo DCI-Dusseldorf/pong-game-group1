@@ -7,27 +7,20 @@ body {
     background-image: url('./image/playa.jpg');
     background-size: 100% 100%;
     background-attachment: fixed;
+    overflow: hidden;
 }
 
 .ball {
-    height: 80px;
-    width: 80px;
+    height: 10vh;
+    width: 10vh;
     position: absolute;
     z-index: 1;
     overflow: hidden;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-.ball:before {
-    content: "";
-    display: block;
-    height: 80px;
-    width: 80px;
     background-image: url("./image/ball.gif");
     background-size: cover;
-    -webkit-transform: none;
 }
 
 .goalkeeper {

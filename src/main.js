@@ -4,7 +4,7 @@ const ball = document.querySelector(".ball");
 
 let positionLeftGK = window.innerHeight / 2;
 let positionRightGK = window.innerHeight / 2;
-let stepLeftGK = 0;    // 0 is stop, -1 is up, 1 is down;
+let stepLeftGK = 0;
 let stepRightGK = 0;
 
 document.onkeydown = function(event) {
@@ -42,8 +42,8 @@ document.onkeyup = function(event) {
 };
 
 function goalkeepersPositions() {
-    const minPosition = window.innerHeight * 0.15;
-    const maxPosition = window.innerHeight * 0.85;
+    const minPosition = leftGoalkeeper.offsetHeight / 2;
+    const maxPosition = window.innerHeight - minPosition;
 
     if (stepLeftGK !== 0) {
         positionLeftGK = positionLeftGK + stepLeftGK * 5;
@@ -71,3 +71,28 @@ function goalkeepersPositions() {
 }
 
 setInterval(goalkeepersPositions, 1000/60);
+
+let positionBallX = window.innerWidth / 2;
+let positionBallY = window.innerHeight / 2;
+let moveBallX = 5;
+let moveBallY = 5;
+
+function ballPosition() {
+    if (positionBallX >= window.innerWidth - ball.offsetWidth / 2
+        || positionBallX <= ball.offsetWidth / 2) {
+            moveBallX = moveBallX * -1;
+    }
+
+    if (positionBallY >= window.innerHeight - ball.offsetHeight / 2
+        || positionBallY <= ball.offsetHeight / 2) {
+            moveBallY = moveBallY * -1;
+    }
+
+    positionBallY = positionBallY + moveBallY;
+    positionBallX = positionBallX + moveBallX;
+
+    ball.style.left = positionBallX + "px";
+    ball.style.top = positionBallY + "px";
+}
+
+setInterval(ballPosition, 1000/60);
