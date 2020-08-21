@@ -112,7 +112,14 @@ class Ball {
     }
 
     if (this.left + this.stepX < this.radius) {
-      console.log("ball left:"+this.left+" + ball stepX:"+ this.stepX +" < ball radius:"+this.radius);
+      console.log(
+        "ball left:" +
+          this.left +
+          " + ball stepX:" +
+          this.stepX +
+          " < ball radius:" +
+          this.radius
+      );
       this.stepX = Math.abs(this.stepX);
       score.addRightScore();
       this.reset();
@@ -144,7 +151,6 @@ function updateBallPosition() {
 }
 
 setInterval(updateBallPosition, 10);
-
 
 //############################################################
 const leftGoalkeeper = document.querySelector(".left-goalkeeper");
