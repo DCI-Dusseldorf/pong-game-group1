@@ -1,53 +1,60 @@
-const leftGoalkeeper = document.querySelector(".left-goalkeeper");
-const rightGoalkeeper = document.querySelector(".right-goalkeeper");
-const ball = document.querySelector(".ball");
-var leftScore = 0;
-var rightScore = 0;
-
-var leftScoreDisplay = document.querySelector(".left-score");
-var rightScoreDisplay = document.querySelector(".right-score");
-function updateScoreDisplay() {
-  leftScoreDisplay.innerHTML = leftScore;
-  rightScoreDisplay.innerHTML = rightScore;
-}
-
 class Goalkeeper {
-  constructor(element) {
-    this.element = element;
+  constructor(selector) {
+    this.selector = selector;
   }
 
   getCurrentUITop() {
-    return document.querySelector(this.element).getBoundingClientRect().top;
+    return document.querySelector(this.selector).getBoundingClientRect().top;
   }
 
   getCurrentUIRight() {
-    return document.querySelector(this.element).getBoundingClientRect().right;
+    return document.querySelector(this.selector).getBoundingClientRect().right;
   }
 
   getCurrentUILeft() {
-    return document.querySelector(this.element).getBoundingClientRect().left;
+    return document.querySelector(this.selector).getBoundingClientRect().left;
   }
 
   getCurrentUIBottom() {
-    return document.querySelector(this.element).getBoundingClientRect().bottom;
+    return document.querySelector(this.selector).getBoundingClientRect().bottom;
+  }
+}
+class ScoreDisplay {
+  constructor(leftElement, rightSelector) {
+    this.leftScore = leftElement;
+    this.rightScore = rightSelector;
+  }
+
+  addLeftScore() {
+    this.addScore(this.leftScore);
+  }
+
+  addRightScore() {
+    this.addScore(this.rightScore);
+  }
+  addScore(selector) {
+    let scoreElement = document.querySelector(selector);
+    scoreElement.innerText = parseInt(scoreElement.innerText) + 1;
   }
 }
 
-let leftGK = new Goalkeeper(".left-goalkeeper");
-let rightGK = new Goalkeeper(".right-goalkeeper");
-
 class Ball {
-  constructor(top, right, bottom, left, width) {
-    this.top = top;
-    this.right = right;
-    this.bottom = bottom;
-    this.left = left;
+  constructor(ballSelector) {
+    this.ball = document.querySelector(ballSelector);
+    let ballRect = this.ball.getBoundingClientRect();
+    this.top = ballRect.top;
+    this.right = ballRect.right;
+    this.bottom = ballRect.bottom;
+    this.left = ballRect.left;
     this.stepY = 3;
     this.stepX = 3;
-    this.radius = width / 2;
+    this.radius = this.ball.offsetWidth / 2;
   }
 
-  reset() {}
+  reset() {
+    this.stepX = Math.sign(this.stepX) * 3;
+    this.stepY = Math.sign(this.stepY) * 3;
+  }
 
   changeDirection(leftGk, rightGk) {
     if (this.top + this.radius > window.innerHeight) {
@@ -89,45 +96,59 @@ class Ball {
     this.right = this.right + this.stepX;
   }
 
-  checkCollision() {
+  checkCollisionAndUpdateScore(score) {
     if (this.left + this.radius > window.innerWidth) {
-      this.stepX = -Math.abs(ballObj.stepX);
-      leftScore += 1;
-      updateScoreDisplay();
+      console.log(
+        "ball left:" +
+          this.left +
+          " + ball radius:" +
+          this.radius +
+          " > window.innerWidth:" +
+          window.innerWidth
+      );
+      this.stepX = -Math.abs(this.stepX);
+      score.addLeftScore();
       this.reset();
     }
 
     if (this.left + this.stepX < this.radius) {
+      console.log("ball left:"+this.left+" + ball stepX:"+ this.stepX +" < ball radius:"+this.radius);
       this.stepX = Math.abs(this.stepX);
-      rightScore += 1;
-      updateScoreDisplay();
+      score.addRightScore();
       this.reset();
     }
   }
+  updateUI() {
+    this.ball.style.top = this.top + "px";
+    this.ball.style.left = this.left + "px";
+    this.ball.style.right = this.right + "px";
+    this.ball.style.bottom = this.bottom + "px";
+  }
+  speedUp(speed) {
+    this.stepX = this.stepX * speed;
+    this.stepY = this.stepY * speed;
+  }
 }
 
-let rightBallRect = ball.getBoundingClientRect();
-let ballObj = new Ball(
-  rightBallRect.top,
-  rightBallRect.right,
-  rightBallRect.bottom,
-  rightBallRect.left,
-  ball.offsetWidth
-);
-
-setInterval(updateBallPosition, 20);
+let scoreDisplay = new ScoreDisplay(".left-score", ".right-score");
+let leftGKObj = new Goalkeeper(".left-goalkeeper");
+let rightGKObj = new Goalkeeper(".right-goalkeeper");
+let ballObj = new Ball(".ball");
 
 function updateBallPosition() {
   ballObj.move();
-  //
-  ballObj.move();
-  ballObj.changeDirection(leftGK, rightGK);
-  ballObj.checkCollision();
-
-  ball.style.top = ballObj.top + "px";
-  ball.style.left = ballObj.left + "px";
-  console.log(ballObj.stepX);
+  ballObj.changeDirection(leftGKObj, rightGKObj);
+  ballObj.checkCollisionAndUpdateScore(scoreDisplay);
+  ballObj.updateUI();
+  ballObj.speedUp(1.002);
 }
+
+setInterval(updateBallPosition, 10);
+
+
+//############################################################
+const leftGoalkeeper = document.querySelector(".left-goalkeeper");
+const rightGoalkeeper = document.querySelector(".right-goalkeeper");
 
 let positionLeftGK = window.innerHeight / 2;
 let positionRightGK = window.innerHeight / 2;
@@ -197,4 +218,4 @@ function goalkeepersPositions() {
   }
 }
 
-setInterval(goalkeepersPositions, 1000 / 60);
+setInterval(goalkeepersPositions, 2);
