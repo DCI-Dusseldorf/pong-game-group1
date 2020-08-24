@@ -149,7 +149,7 @@ let leftGKObj = new Goalkeeper(".left-goalkeeper");
 let rightGKObj = new Goalkeeper(".right-goalkeeper");
 let ballObj = new Ball(".ball");
 
-function updateBallPositions() {
+function updatePositions() {
   goalkeepersPositions();
   ballObj.move();
   ballObj.changeDirection(leftGKObj, rightGKObj);
@@ -158,7 +158,7 @@ function updateBallPositions() {
   ballObj.speedUp(1.002);
 }
 
-setInterval(updateBallPositions, 1000 / 60);
+setInterval(updatePositions, 1000 / 60);
 
 //############################################################
 const leftGoalkeeper = document.querySelector(".left-goalkeeper");
