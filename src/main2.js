@@ -46,20 +46,20 @@ class Ball {
     this.right = this.ballRect.right;
     this.bottom = this.ballRect.bottom;
     this.left = this.ballRect.left;
-    this.stepY = 3;
-    this.stepX = 3;
+    this.stepY = 5;
+    this.stepX = 5;
     this.radius = this.ball.offsetWidth / 2;
   }
 
   reset() {
-    this.stepX = 3;
-    this.stepY = 3;
+    this.stepX = 5;
+    this.stepY = 5;
     this.top = this.ballRect.top;
     this.right = this.ballRect.right;
     this.bottom = this.ballRect.bottom;
     this.left = this.ballRect.left;
     let audio = new Audio('sounds/ow/'+Math.floor(Math.random() * 48) +'.mp3');
-    //audio.play();
+    audio.play();
   }
 
   changeDirection(leftGk, rightGk) {
@@ -154,7 +154,7 @@ function updatePositions() {
   ballObj.changeDirection(leftGKObj, rightGKObj);
   ballObj.checkCollisionAndUpdateScore(scoreDisplay);
   ballObj.updateUI();
-  ballObj.speedUp(1.002);
+  ballObj.speedUp(1.0005);
 }
 
 setInterval(updatePositions, 1000 / 60);
