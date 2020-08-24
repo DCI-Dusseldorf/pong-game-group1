@@ -40,7 +40,6 @@ class ScoreDisplay {
 
 class Ball {
   constructor(ballSelector) {
-    debugger;
     this.ball = document.querySelector(ballSelector);
     this.ballRect = this.ball.getBoundingClientRect();
     this.top = this.ballRect.top;
@@ -53,14 +52,14 @@ class Ball {
   }
 
   reset() {
-    debugger;
     this.stepX = 3;
     this.stepY = 3;
     this.top = this.ballRect.top;
     this.right = this.ballRect.right;
     this.bottom = this.ballRect.bottom;
     this.left = this.ballRect.left;
-    updateUI();
+    let audio = new Audio('sounds/ow/'+Math.floor(Math.random() * 48) +'.mp3');
+    //audio.play();
   }
 
   changeDirection(leftGk, rightGk) {
@@ -231,3 +230,4 @@ function goalkeepersPositions() {
     rightGoalkeeper.style.top = positionRightGK + "px";
   }
 }
+
