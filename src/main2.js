@@ -75,9 +75,9 @@ class Ball {
     var leftGKBottom = leftGk.getCurrentUIBottom();
 
     if (
-      leftGKTop < this.bottom &&
+      leftGKTop < this.bottom - this.radius &&         //// Added radius here as well, now the ball bounces from GK edges too.
       leftGKRight > this.left - this.radius &&
-      leftGKBottom > this.top
+      leftGKBottom > this.top - this.radius            //// Same here. Added radius.
     ) {
       this.stepX = Math.abs(this.stepX);
     }
@@ -88,8 +88,8 @@ class Ball {
 
     if (
       rightGKLeft < this.right - this.radius &&
-      rightGKTop < this.bottom &&
-      rightGKBottom > this.top
+      rightGKTop < this.bottom - this.radius &&        //// Same here. Added radius.
+      rightGKBottom > this.top - this.radius           //// Same here. Added radius.
     ) {
       this.stepX = -Math.abs(this.stepX);
     }
@@ -104,29 +104,29 @@ class Ball {
 
   checkCollisionAndUpdateScore(score) {
     if (this.left + this.radius > window.innerWidth) {
-      console.log(
-        "LEFT ball left:" +
-          this.left +
-          " + ball radius:" +
-          this.radius +
-          " > window.innerWidth:" +
-          window.innerWidth
-      );
-      this.stepX = -Math.abs(this.stepX);
+      // console.log(
+      //   "LEFT ball left:" +
+      //     this.left +
+      //     " + ball radius:" +
+      //     this.radius +
+      //     " > window.innerWidth:" +
+      //     window.innerWidth
+      // );
+      this.stepX = -Math.abs(this.stepX);              //// Looks like we don't need this line...
       score.addLeftScore();
-      this.reset();
+      this.reset();                                    //// ...because this line resets stepX to 5 anyway.
     }
 
     if (this.left + this.stepX < this.radius) {
-      console.log(
-        "RIGHT ball left:" +
-          this.left +
-          " + ball stepX:" +
-          this.stepX +
-          " < ball radius:" +
-          this.radius
-      );
-      this.stepX = Math.abs(this.stepX);
+      // console.log(
+      //   "RIGHT ball left:" +
+      //     this.left +
+      //     " + ball stepX:" +
+      //     this.stepX +
+      //     " < ball radius:" +
+      //     this.radius
+      // );
+      this.stepX = Math.abs(this.stepX);               //// Same here. We don't need it. Right?
       score.addRightScore();
       this.reset();
     }
@@ -230,4 +230,3 @@ function goalkeepersPositions() {
     rightGoalkeeper.style.top = positionRightGK + "px";
   }
 }
-
