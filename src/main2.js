@@ -40,27 +40,34 @@ class ScoreDisplay {
 
 class Ball {
   constructor(ballSelector) {
+    debugger;
     this.ball = document.querySelector(ballSelector);
-    let ballRect = this.ball.getBoundingClientRect();
-    this.top = ballRect.top;
-    this.right = ballRect.right;
-    this.bottom = ballRect.bottom;
-    this.left = ballRect.left;
+    this.ballRect = this.ball.getBoundingClientRect();
+    this.top = this.ballRect.top;
+    this.right = this.ballRect.right;
+    this.bottom = this.ballRect.bottom;
+    this.left = this.ballRect.left;
     this.stepY = 3;
     this.stepX = 3;
     this.radius = this.ball.offsetWidth / 2;
   }
 
   reset() {
-    this.stepX = Math.sign(this.stepX) * 3;
-    this.stepY = Math.sign(this.stepY) * 3;
+    debugger;
+    this.stepX = 3;
+    this.stepY = 3;
+    this.top = this.ballRect.top;
+    this.right = this.ballRect.right;
+    this.bottom = this.ballRect.bottom;
+    this.left = this.ballRect.left;
+    updateUI();
   }
 
   changeDirection(leftGk, rightGk) {
     if (this.top + this.radius > window.innerHeight) {
-      this.stepY = -Math.abs(ballObj.stepY);
+      this.stepY = -Math.abs(this.stepY);
     }
-    if (this.top + this.stepY < ballObj.radius) {
+    if (this.top + this.stepY < this.radius) {
       this.stepY = Math.abs(this.stepY);
     }
 
@@ -73,7 +80,7 @@ class Ball {
       leftGKRight > this.left - this.radius &&
       leftGKBottom > this.top
     ) {
-      this.stepX = Math.abs(ballObj.stepX);
+      this.stepX = Math.abs(this.stepX);
     }
 
     var rightGKLeft = rightGk.getCurrentUILeft();
@@ -85,7 +92,7 @@ class Ball {
       rightGKTop < this.bottom &&
       rightGKBottom > this.top
     ) {
-      this.stepX = -Math.abs(ballObj.stepX);
+      this.stepX = -Math.abs(this.stepX);
     }
   }
 
@@ -99,7 +106,7 @@ class Ball {
   checkCollisionAndUpdateScore(score) {
     if (this.left + this.radius > window.innerWidth) {
       console.log(
-        "ball left:" +
+        "LEFT ball left:" +
           this.left +
           " + ball radius:" +
           this.radius +
@@ -113,7 +120,7 @@ class Ball {
 
     if (this.left + this.stepX < this.radius) {
       console.log(
-        "ball left:" +
+        "RIGHT ball left:" +
           this.left +
           " + ball stepX:" +
           this.stepX +
@@ -150,7 +157,7 @@ function updateBallPosition() {
   ballObj.speedUp(1.002);
 }
 
-setInterval(updateBallPosition, 10);
+setInterval(updateBallPosition,  1000/60);
 
 //############################################################
 const leftGoalkeeper = document.querySelector(".left-goalkeeper");
@@ -200,7 +207,7 @@ function goalkeepersPositions() {
   const maxPosition = window.innerHeight * 0.85;
 
   if (stepLeftGK !== 0) {
-    positionLeftGK = positionLeftGK + stepLeftGK * 5;
+    positionLeftGK = positionLeftGK + stepLeftGK * 20;
 
     if (positionLeftGK < minPosition) {
       positionLeftGK = minPosition;
@@ -212,7 +219,7 @@ function goalkeepersPositions() {
   }
 
   if (stepRightGK !== 0) {
-    positionRightGK = positionRightGK + stepRightGK * 5;
+    positionRightGK = positionRightGK + stepRightGK * 20;
 
     if (positionRightGK < minPosition) {
       positionRightGK = minPosition;
@@ -224,4 +231,4 @@ function goalkeepersPositions() {
   }
 }
 
-setInterval(goalkeepersPositions, 2);
+setInterval(goalkeepersPositions, 1000/60);
