@@ -46,20 +46,26 @@ class Ball {
     this.right = this.ballRect.right;
     this.bottom = this.ballRect.bottom;
     this.left = this.ballRect.left;
-    this.stepY = 5;
-    this.stepX = 5;
+    this.stepY = this.SPEED;
+    this.stepX = this.SPEED;
     this.radius = this.ball.offsetWidth / 2;
   }
 
+  SPEED = 5;
+
   reset() {
-    this.stepX = 5;
-    this.stepY = 5;
+    this.stepX = this.SPEED;
+    this.stepY = this.SPEED;
     this.top = this.ballRect.top;
     this.right = this.ballRect.right;
     this.bottom = this.ballRect.bottom;
     this.left = this.ballRect.left;
-    let audio = new Audio('sounds/ow/'+Math.floor(Math.random() * 48) +'.mp3');
+    let audio = new Audio(
+      "sounds/ow/" + Math.floor(Math.random() * 47) + ".mp3"
+    );
     audio.play();
+    game.stop();
+    setTimeout(() => game.start(), 2000);
   }
 
   changeDirection(leftGk, rightGk) {
@@ -143,21 +149,41 @@ class Ball {
   }
 }
 
-let scoreDisplay = new ScoreDisplay(".left-score", ".right-score");
-let leftGKObj = new Goalkeeper(".left-goalkeeper");
-let rightGKObj = new Goalkeeper(".right-goalkeeper");
-let ballObj = new Ball(".ball");
+class Game {
+  constructor(ballObj, scoreDisplayObj, leftGKObj, rightGKObj) {
+    this.ballObj = ballObj;
+    this.scoreDisplayObj = scoreDisplayObj;
+    this.leftGKObj = leftGKObj;
+    this.rightGKObj = rightGKObj;
+  }
+  intervalID;
+  start() {
+    this.intervalID = setInterval(() => {
+      this.updatePositions();
+    }, 1000 / 60);
+  }
+  stop() {
+    clearInterval(this.intervalID);
+  }
 
-function updatePositions() {
-  goalkeepersPositions();
-  ballObj.move();
-  ballObj.changeDirection(leftGKObj, rightGKObj);
-  ballObj.checkCollisionAndUpdateScore(scoreDisplay);
-  ballObj.updateUI();
-  ballObj.speedUp(1.0005);
+  updatePositions() {
+    goalkeepersPositions();
+    this.ballObj.move();
+    this.ballObj.changeDirection(this.leftGKObj, this.rightGKObj);
+    this.ballObj.checkCollisionAndUpdateScore(this.scoreDisplayObj);
+    this.ballObj.updateUI();
+    this.ballObj.speedUp(1.003);
+  }
 }
 
-setInterval(updatePositions, 1000 / 60);
+const game = new Game(
+  new Ball(".ball"),
+  new ScoreDisplay(".left-score", ".right-score"),
+  new Goalkeeper(".left-goalkeeper"),
+  new Goalkeeper(".right-goalkeeper")
+);
+
+game.start();
 
 //############################################################
 const leftGoalkeeper = document.querySelector(".left-goalkeeper");
@@ -230,4 +256,3 @@ function goalkeepersPositions() {
     rightGoalkeeper.style.top = positionRightGK + "px";
   }
 }
-
