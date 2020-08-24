@@ -35,6 +35,9 @@ class ScoreDisplay {
   addScore(selector) {
     let scoreElement = document.querySelector(selector);
     scoreElement.innerText = parseInt(scoreElement.innerText) + 1;
+    scoreElement.style.fontSize = "100px";                          // The "winned" score pops-up for 1 sec
+    let fontBack = () => scoreElement.style.fontSize = "50px";      //
+    setTimeout(fontBack, 1000);                                     // and then goes back to norm.
   }
 }
 
@@ -65,7 +68,7 @@ class Ball {
     );
     audio.play();
     game.stop();
-    setTimeout(() => game.start(), 2000);
+    setTimeout(() => game.start(), 1000);                       // Changed to 1 sec, since added 1 sec in line 40.
   }
 
   changeDirection(leftGk, rightGk) {
@@ -81,9 +84,9 @@ class Ball {
     var leftGKBottom = leftGk.getCurrentUIBottom();
 
     if (
-      leftGKTop < this.bottom - this.radius &&         //// Added radius here as well, now the ball bounces from GK edges too.
+      leftGKTop < this.bottom - this.radius &&
       leftGKRight > this.left - this.radius &&
-      leftGKBottom > this.top - this.radius            //// Same here. Added radius.
+      leftGKBottom > this.top - this.radius
     ) {
       this.stepX = Math.abs(this.stepX);
     }
@@ -94,8 +97,8 @@ class Ball {
 
     if (
       rightGKLeft < this.right - this.radius &&
-      rightGKTop < this.bottom - this.radius &&        //// Same here. Added radius.
-      rightGKBottom > this.top - this.radius           //// Same here. Added radius.
+      rightGKTop < this.bottom - this.radius &&
+      rightGKBottom > this.top - this.radius
     ) {
       this.stepX = -Math.abs(this.stepX);
     }
@@ -110,29 +113,12 @@ class Ball {
 
   checkCollisionAndUpdateScore(score) {
     if (this.left + this.radius > window.innerWidth) {
-      // console.log(
-      //   "LEFT ball left:" +
-      //     this.left +
-      //     " + ball radius:" +
-      //     this.radius +
-      //     " > window.innerWidth:" +
-      //     window.innerWidth
-      // );
-      this.stepX = -Math.abs(this.stepX);              //// Looks like we don't need this line...
       score.addLeftScore();
-      this.reset();                                    //// ...because this line resets stepX to 5 anyway.
+      this.reset();
     }
 
     if (this.left + this.stepX < this.radius) {
-      // console.log(
-      //   "RIGHT ball left:" +
-      //     this.left +
-      //     " + ball stepX:" +
-      //     this.stepX +
-      //     " < ball radius:" +
-      //     this.radius
-      // );
-      this.stepX = Math.abs(this.stepX);               //// Same here. We don't need it. Right?
+      this.stepX = Math.abs(this.stepX);
       score.addRightScore();
       this.reset();
     }
@@ -172,7 +158,7 @@ class Game {
     this.ballObj.changeDirection(this.leftGKObj, this.rightGKObj);
     this.ballObj.checkCollisionAndUpdateScore(this.scoreDisplayObj);
     this.ballObj.updateUI();
-    this.ballObj.speedUp(1.003);
+    this.ballObj.speedUp(1.0005);
   }
 }
 
@@ -183,7 +169,23 @@ const game = new Game(
   new Goalkeeper(".right-goalkeeper")
 );
 
+let pause = false;                  // I already tried to declare it even in the line 1...
 game.start();
+
+document.onkeydown = event => {     // DOESN'T WORK! WTF?
+  if (event.code == "Space") {
+    switch (pause) {
+      case false:
+        pause = true;
+        game.stop();
+        break;
+      case true:
+        pause = false;
+        game.start();
+        break;
+    }
+  }
+}
 
 //############################################################
 const leftGoalkeeper = document.querySelector(".left-goalkeeper");
