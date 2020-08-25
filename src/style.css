@@ -95,12 +95,20 @@ body {
     display: none;
 }
 
-#pause-note {
+.key-notes {
     font-family: monospace;
     color: purple;
     text-shadow: 1px 0 pink, 0 1px pink, -1px 0 pink, 0 -1px pink;
     position: absolute;
-    bottom: 10px;
+    bottom: 0px;
     width: 100%;
     text-align: center;
+}
+
+#key-notes-line1 {
+    margin: 0;
+}
+
+#key-notes-line2 {
+    margin: 3px 0 10px 103px;
 }
