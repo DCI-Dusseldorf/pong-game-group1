@@ -35,9 +35,9 @@ class ScoreDisplay {
   addScore(selector) {
     let scoreElement = document.querySelector(selector);
     scoreElement.innerText = parseInt(scoreElement.innerText) + 1;
-    scoreElement.style.fontSize = "100px";                          // The "winned" score pops-up for 1 sec
-    let fontBack = () => scoreElement.style.fontSize = "50px";      //
-    setTimeout(fontBack, 1000);                                     // and then goes back to norm.
+    scoreElement.style.fontSize = "100px"; // The "winned" score pops-up for 1 sec
+    let fontBack = () => (scoreElement.style.fontSize = "50px"); //
+    setTimeout(fontBack, 1000); // and then goes back to norm.
   }
 }
 
@@ -55,10 +55,12 @@ class Ball {
   }
 
   SPEED = 5;
+  ACCELERATOR = 1.1;
 
   reset() {
-    this.stepX = this.SPEED;
-    this.stepY = this.SPEED;
+    // 0 value to stop the ball
+    this.stepX = 0;
+    this.stepY = 0;
     this.top = this.ballRect.top;
     this.right = this.ballRect.right;
     this.bottom = this.ballRect.bottom;
@@ -67,8 +69,11 @@ class Ball {
       "sounds/ow/" + Math.floor(Math.random() * 47) + ".mp3"
     );
     audio.play();
-    game.stop();
-    setTimeout(() => game.start(), 1000);                       // Changed to 1 sec, since added 1 sec in line 40.
+    setTimeout(() => {
+      // this.SPEED is default value to make the ball move
+      this.stepX = this.SPEED;
+      this.stepY = this.SPEED;
+    }, 1000);
   }
 
   changeDirection(leftGk, rightGk) {
@@ -79,28 +84,22 @@ class Ball {
       this.stepY = Math.abs(this.stepY);
     }
 
-    var leftGKTop = leftGk.getCurrentUITop();
-    var leftGKRight = leftGk.getCurrentUIRight();
-    var leftGKBottom = leftGk.getCurrentUIBottom();
-
     if (
-      leftGKTop < this.bottom - this.radius &&
-      leftGKRight > this.left - this.radius &&
-      leftGKBottom > this.top - this.radius
+      leftGk.getCurrentUITop() < this.bottom - this.radius &&
+      leftGk.getCurrentUIRight() > this.left - this.radius &&
+      leftGk.getCurrentUIBottom() > this.top - this.radius
     ) {
       this.stepX = Math.abs(this.stepX);
+      this.speedUp(this.ACCELERATOR);
     }
 
-    var rightGKLeft = rightGk.getCurrentUILeft();
-    var rightGKTop = rightGk.getCurrentUITop();
-    var rightGKBottom = rightGk.getCurrentUIBottom();
-
     if (
-      rightGKLeft < this.right - this.radius &&
-      rightGKTop < this.bottom - this.radius &&
-      rightGKBottom > this.top - this.radius
+      rightGk.getCurrentUILeft() < this.right - this.radius &&
+      rightGk.getCurrentUITop() < this.bottom - this.radius &&
+      rightGk.getCurrentUIBottom() > this.top - this.radius
     ) {
       this.stepX = -Math.abs(this.stepX);
+      this.speedUp(this.ACCELERATOR);
     }
   }
 
@@ -143,6 +142,7 @@ class Game {
     this.rightGKObj = rightGKObj;
   }
   intervalID;
+  pauseStatus = false;
   start() {
     this.intervalID = setInterval(() => {
       this.updatePositions();
@@ -152,13 +152,22 @@ class Game {
     clearInterval(this.intervalID);
   }
 
+  pause() {
+    if (this.pauseStatus) {
+      this.start();
+      this.pauseStatus = false;
+    } else {
+      this.stop();
+      this.pauseStatus = true;
+    }
+  }
+
   updatePositions() {
     goalkeepersPositions();
     this.ballObj.move();
     this.ballObj.changeDirection(this.leftGKObj, this.rightGKObj);
     this.ballObj.checkCollisionAndUpdateScore(this.scoreDisplayObj);
     this.ballObj.updateUI();
-    this.ballObj.speedUp(1.0005);
   }
 }
 
@@ -169,23 +178,7 @@ const game = new Game(
   new Goalkeeper(".right-goalkeeper")
 );
 
-let pause = false;                  // I already tried to declare it even in the line 1...
 game.start();
-
-document.onkeydown = event => {     // DOESN'T WORK! WTF?
-  if (event.code == "Space") {
-    switch (pause) {
-      case false:
-        pause = true;
-        game.stop();
-        break;
-      case true:
-        pause = false;
-        game.start();
-        break;
-    }
-  }
-}
 
 //############################################################
 const leftGoalkeeper = document.querySelector(".left-goalkeeper");
@@ -209,6 +202,9 @@ document.onkeydown = function (event) {
       break;
     case "ArrowDown":
       stepRightGK = 1;
+      break;
+    case "Space":
+      game.pause();
       break;
   }
 };
