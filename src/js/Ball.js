@@ -2,7 +2,7 @@ class Ball extends GameObject {
   SPEED = 7;
   stepY = this.SPEED;
   stepX = this.SPEED;
-  ACCELERATOR = 1.03;
+  ACCELERATOR = 1.04;
 
   reset() {
     // 0 value to stop the ball
@@ -20,7 +20,7 @@ class Ball extends GameObject {
       // this.SPEED is default value to make the ball move
       this.stepX = this.SPEED;
       this.stepY = this.SPEED;
-    }, 1000);
+    }, 2000);
   }
 
   changeDirection(leftGk, rightGk) {
