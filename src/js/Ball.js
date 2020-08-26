@@ -24,10 +24,15 @@ class Ball extends GameObject {
   }
 
   changeDirection(leftGk, rightGk) {
+    let footBall = new Audio("sounds/ball-football.wav");
+    let basketBall = new Audio("sounds/ball-basketball.wav");
+
     if (this.top + this.radius > window.innerHeight) {
+      footBall.play();
       this.stepY = -Math.abs(this.stepY);
     }
     if (this.top + this.stepY < this.radius) {
+      footBall.play();
       this.stepY = Math.abs(this.stepY);
     }
 
@@ -36,6 +41,7 @@ class Ball extends GameObject {
       leftGk.right > this.left - this.radius &&
       leftGk.bottom > this.top - this.radius
     ) {
+      basketBall.play();
       this.stepX = Math.abs(this.stepX);
       this.speedUp(this.ACCELERATOR);
     }
@@ -45,6 +51,7 @@ class Ball extends GameObject {
       rightGk.top < this.bottom - this.radius &&
       rightGk.bottom > this.top - this.radius
     ) {
+      basketBall.play();
       this.stepX = -Math.abs(this.stepX);
       this.speedUp(this.ACCELERATOR);
     }
