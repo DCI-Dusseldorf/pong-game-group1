@@ -30,18 +30,18 @@ class Ball extends GameObject {
     }
 
     if (
-      leftGk.top < this.bottom - this.radius &&
-      leftGk.right > this.left - this.radius &&
-      leftGk.bottom > this.top - this.radius
+      leftGk.getCurrentUITop() < this.bottom - this.radius &&
+      leftGk.getCurrentUIRight() > this.left - this.radius &&
+      leftGk.getCurrentUIBottom() > this.top - this.radius
     ) {
       this.stepX = Math.abs(this.stepX);
       this.speedUp(this.ACCELERATOR);
     }
 
     if (
-      rightGk.left < this.right - this.radius &&
-      rightGk.top < this.bottom - this.radius &&
-      rightGk.bottom > this.top - this.radius
+      rightGk.getCurrentUILeft() < this.right - this.radius &&
+      rightGk.getCurrentUITop() < this.bottom - this.radius &&
+      rightGk.getCurrentUIBottom() > this.top - this.radius
     ) {
       this.stepX = -Math.abs(this.stepX);
       this.speedUp(this.ACCELERATOR);
