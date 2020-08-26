@@ -147,3 +147,19 @@ body {
 #key-notes-line2 {
   margin: 3px 0 10px 103px;
 }
+
+.pause-icon {
+  width: 100vw;
+  height: auto;
+  text-align: center;
+  position: absolute;
+  top: 50vh;
+  transform: translateY(-50%);
+  z-index: 9999;
+  visibility: hidden;
+}
+
+#pause-icon {
+  font-size: 60vh;
+  color: rgba(25, 25, 112, 0.7);
+}

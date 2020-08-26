@@ -19,9 +19,11 @@ class GameEngine {
   pause() {
     if (this.pauseStatus) {
       this.start();
+      document.querySelector(".pause-icon").style.visibility = "hidden";
       this.pauseStatus = false;
     } else {
       this.stop();
+      document.querySelector(".pause-icon").style.visibility = "initial";
       this.pauseStatus = true;
     }
   }
