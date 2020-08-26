@@ -1,4 +1,4 @@
-const game = new Game(
+const gameEngine = new GameEngine(
   new Ball(".ball"),
   new ScoreDisplay(".left-score", ".right-score"),
   new Goalkeeper(".left-goalkeeper"),
@@ -23,12 +23,12 @@ document.onkeydown = function (event) {
       stepRightGK = 1;
       break;
     case "Space":
-      game.pause();
+      gameEngine.pause();
       break;
     case "Enter":
-      if (game.pauseStatus == false) {
-        game.stop();
-        game.start();
+      if (gameEngine.pauseStatus == false) {
+        gameEngine.stop();
+        gameEngine.start();
       }
       break;
   }

@@ -1,4 +1,4 @@
-class Game {
+class GameEngine {
   constructor(ballObj, scoreDisplayObj, leftGKObj, rightGKObj) {
     this.ballObj = ballObj;
     this.scoreDisplayObj = scoreDisplayObj;
