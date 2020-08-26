@@ -1,5 +1,6 @@
 class Goalkeeper extends GameObject {
   SPEED = 20;
+  stepY = this.SPEED
   getCurrentUITop() {
     return document.querySelector(this.selector).getBoundingClientRect().top;
   }
@@ -17,20 +18,20 @@ class Goalkeeper extends GameObject {
   }
 
   changePosition(stepGK) {
-    const minPosition = this.element.offsetHeight / 2;
-    const maxPosition = window.innerHeight - minPosition;
+      const minPosition = this.element.offsetHeight / 2;
+      const maxPosition = window.innerHeight - minPosition;
+      this.stepY = 0;
+      this.stepX = 0;
 
     if (stepGK !== 0) {
-      this.top = this.top + stepGK * this.SPEED;
-      this.bottom = this.bottom + stepGK * this.SPEED;
+      var tmpTop = this.top + stepGK * this.SPEED;
+      this.stepY = stepGK * this.SPEED;
 
-      if (this.top < minPosition) {
-        this.top = minPosition;
-        this.bottom = minPosition;
+      if (tmpTop < minPosition) {
+        this.stepY = 1 * this.SPEED
       } else if (this.top > maxPosition) {
-        this.top = maxPosition;
-        this.bottom = maxPosition;
+        this.stepY = -1 * this.SPEED
       }
-    }
   }
+}
 }

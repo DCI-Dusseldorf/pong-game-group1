@@ -1,5 +1,7 @@
 class Ball extends GameObject {
   SPEED = 7;
+  stepY = this.SPEED;
+  stepX = this.SPEED;
   ACCELERATOR = 1.03;
 
   reset() {
@@ -48,12 +50,6 @@ class Ball extends GameObject {
     }
   }
 
-  move() {
-    this.top = this.top + this.stepY;
-    this.left = this.left + this.stepX;
-    this.bottom = this.bottom + this.stepY;
-    this.right = this.right + this.stepX;
-  }
 
   checkCollisionAndUpdateScore(score) {
     if (this.left + this.radius > window.innerWidth) {
