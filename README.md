@@ -18,8 +18,8 @@
 ## Ball physics
 - At the game start (or after each score) ball starts to move at a constant initial speed.
 - After any edge of the ball touches **top** or **bottom** edge of the field, the ball movement reverses its direction by the **same reflected angle**. Speed of the ball movement remains the same.
-- After any edge of the ball touches a **central part** of any paddle (**40%** of a paddle length: 20% above + 20% below its Y-axis center), the ball movement reverses its direction by the **same reflected angle**. And each time speed of the ball movement **increases by 2%**.
-- After any edge of the ball touches an **edge part** of any paddle (**30%** of a paddle length **from the both sides** of a paddle), the ball movement reverses its direction by the **same angle**, but **NOT reflected**. I.e. after bouncing the ball returns to the same direction where it came from. And each time speed of the ball movement **increases by 2%**.
+- After any edge of the ball touches a **central part** of any paddle (**40%** of a paddle length: 20% above + 20% below its Y-axis center), the ball movement reverses its direction by the **same reflected angle**. And each time, speed of the ball movement **increases by 2%**.
+- After any edge of the ball touches an **edge part** of any paddle (**30%** of a paddle length **from the both sides** of a paddle), the ball movement reverses its direction by the **same angle**, but **NOT reflected**. I.e. after bouncing, the ball returns to the same direction where it came from. And each time, speed of the ball movement **increases by 2%**.
 
 ## Game flow
 1. After pressing **ENTER**, game starts with the ball being positioned at its default position and with started movement at initial speed strictly to the **right** (parallel to the X-axis). Score counter is set to 0:0.
