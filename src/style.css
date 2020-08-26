@@ -26,7 +26,7 @@ body {
 .goalkeeper {
     width: 20px;
     height: 30%;
-    position: relative;
+    position: absolute;
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     transform: translateY(-50%);
@@ -34,15 +34,13 @@ body {
 }
 
 .left-goalkeeper {
-    float: left;
-    margin-left: 5px;
+    left: 5px;
     background-color: rgb(133, 133, 39);
     top: 50%;
 }
 
 .right-goalkeeper {
-    float: right;
-    margin-right: 5px;
+    right: 5px;
     background-color: brown;
     top: 50%;
 }

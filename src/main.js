@@ -1,8 +1,27 @@
-class Goalkeeper {
+class GameObject {
   constructor(selector) {
     this.selector = selector;
+    this.element = document.querySelector(this.selector);
+    this.elementRect = this.element.getBoundingClientRect();
+    this.top = this.elementRect.top;
+    this.right = this.elementRect.right;
+    this.bottom = this.elementRect.bottom;
+    this.left = this.elementRect.left;
+    this.radius = this.element.offsetWidth / 2;
   }
+  SPEED = 5;
+  stepY = this.SPEED;
+  stepX = this.SPEED;
 
+  updateUI() {
+    this.element.style.top = this.top + "px";
+    this.element.style.left = this.left + "px";
+     this.element.style.right = this.right + "px";
+    this.element.style.bottom = this.bottom + "px";
+  }
+}
+class Goalkeeper extends GameObject {
+  SPEED = 20;
   getCurrentUITop() {
     return document.querySelector(this.selector).getBoundingClientRect().top;
   }
@@ -17,6 +36,25 @@ class Goalkeeper {
 
   getCurrentUIBottom() {
     return document.querySelector(this.selector).getBoundingClientRect().bottom;
+  }
+
+  changePosition(stepGK) {
+    const minPosition = this.element.offsetHeight / 2;
+    const maxPosition = window.innerHeight - minPosition;
+
+    if (stepGK !== 0) {
+      this.top = this.top + stepGK * this.SPEED;
+      this.bottom = this.bottom + stepGK * this.SPEED;
+
+      if (this.top < minPosition) {
+        this.top = minPosition;
+        this.bottom = minPosition;
+      } else if (this.top > maxPosition) {
+        this.top = maxPosition;
+        this.bottom = maxPosition;
+      }
+
+    }
   }
 }
 class ScoreDisplay {
@@ -41,18 +79,7 @@ class ScoreDisplay {
   }
 }
 
-class Ball {
-  constructor(ballSelector) {
-    this.ball = document.querySelector(ballSelector);
-    this.ballRect = this.ball.getBoundingClientRect();
-    this.top = this.ballRect.top;
-    this.right = this.ballRect.right;
-    this.bottom = this.ballRect.bottom;
-    this.left = this.ballRect.left;
-    this.stepY = this.SPEED;
-    this.stepX = this.SPEED;
-    this.radius = this.ball.offsetWidth / 2;
-  }
+class Ball extends GameObject{
 
   SPEED = 7;
   ACCELERATOR = 1.03;
@@ -61,10 +88,10 @@ class Ball {
     // 0 value to stop the ball
     this.stepX = 0;
     this.stepY = 0;
-    this.top = this.ballRect.top;
-    this.right = this.ballRect.right;
-    this.bottom = this.ballRect.bottom;
-    this.left = this.ballRect.left;
+    this.top = this.elementRect.top;
+    this.right = this.elementRect.right;
+    this.bottom = this.elementRect.bottom;
+    this.left = this.elementRect.left;
     let audio = new Audio(
       "sounds/ow/" + Math.floor(Math.random() * 47) + ".mp3"
     );
@@ -122,12 +149,7 @@ class Ball {
       this.reset();
     }
   }
-  updateUI() {
-    this.ball.style.top = this.top + "px";
-    this.ball.style.left = this.left + "px";
-    this.ball.style.right = this.right + "px";
-    this.ball.style.bottom = this.bottom + "px";
-  }
+
   speedUp(speed) {
     this.stepX = this.stepX * speed;
     this.stepY = this.stepY * speed;
@@ -163,7 +185,11 @@ class Game {
   }
 
   updatePositions() {
-    goalkeepersPositions();
+    this.leftGKObj.changePosition(stepLeftGK);
+    this.leftGKObj.updateUI();
+    this.rightGKObj.changePosition(stepRightGK);
+    this.rightGKObj.updateUI();
+    this.ballObj.move();
     this.ballObj.move();
     this.ballObj.changeDirection(this.leftGKObj, this.rightGKObj);
     this.ballObj.checkCollisionAndUpdateScore(this.scoreDisplayObj);
@@ -178,12 +204,6 @@ const game = new Game(
   new Goalkeeper(".right-goalkeeper")
 );
 
-//############################################################
-const leftGoalkeeper = document.querySelector(".left-goalkeeper");
-const rightGoalkeeper = document.querySelector(".right-goalkeeper");
-
-let positionLeftGK = window.innerHeight / 2;
-let positionRightGK = window.innerHeight / 2;
 let stepLeftGK = 0;
 let stepRightGK = 0;
 
@@ -229,32 +249,3 @@ document.onkeyup = function (event) {
       break;
   }
 };
-
-function goalkeepersPositions() {
-  const minPosition = leftGoalkeeper.offsetHeight / 2;
-  const maxPosition = window.innerHeight - minPosition;
-
-  if (stepLeftGK !== 0) {
-    positionLeftGK = positionLeftGK + stepLeftGK * 13;
-
-    if (positionLeftGK < minPosition) {
-      positionLeftGK = minPosition;
-    } else if (positionLeftGK > maxPosition) {
-      positionLeftGK = maxPosition;
-    }
-
-    leftGoalkeeper.style.top = positionLeftGK + "px";
-  }
-
-  if (stepRightGK !== 0) {
-    positionRightGK = positionRightGK + stepRightGK * 13;
-
-    if (positionRightGK < minPosition) {
-      positionRightGK = minPosition;
-    } else if (positionRightGK > maxPosition) {
-      positionRightGK = maxPosition;
-    }
-
-    rightGoalkeeper.style.top = positionRightGK + "px";
-  }
-}
