@@ -32,32 +32,31 @@ class Ball extends GameObject {
     }
 
     if (
-      leftGk.getCurrentUITop() < this.bottom - this.radius &&
-      leftGk.getCurrentUIRight() > this.left - this.radius &&
-      leftGk.getCurrentUIBottom() > this.top - this.radius
+      leftGk.top < this.bottom - this.radius &&
+      leftGk.right > this.left - this.radius &&
+      leftGk.bottom > this.top - this.radius
     ) {
       this.stepX = Math.abs(this.stepX);
       this.speedUp(this.ACCELERATOR);
     }
 
     if (
-      rightGk.getCurrentUILeft() < this.right - this.radius &&
-      rightGk.getCurrentUITop() < this.bottom - this.radius &&
-      rightGk.getCurrentUIBottom() > this.top - this.radius
+      rightGk.left < this.right - this.radius &&
+      rightGk.top < this.bottom - this.radius &&
+      rightGk.bottom > this.top - this.radius
     ) {
       this.stepX = -Math.abs(this.stepX);
       this.speedUp(this.ACCELERATOR);
     }
   }
 
-
   checkCollisionAndUpdateScore(score) {
-    if (this.left + this.radius > window.innerWidth) {
+    if (this.right - this.radius - this.radius > window.innerWidth) {
       score.addLeftScore();
       this.reset();
     }
 
-    if (this.left + this.stepX < this.radius) {
+    if (this.left +this.radius < this.radius) {
       this.stepX = Math.abs(this.stepX);
       score.addRightScore();
       this.reset();
