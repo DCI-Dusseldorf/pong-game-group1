@@ -1,7 +1,7 @@
 class Ball extends GameObject {
   SPEED = 7;
-  stepY = this.SPEED;
-  stepX = this.SPEED;
+  stepY = this.SPEED * (Math.round(Math.random()) * 2 - 1);
+  stepX = this.SPEED * (Math.round(Math.random()) * 2 - 1);
   ACCELERATOR = 1.04;
 
   reset() {
@@ -18,8 +18,8 @@ class Ball extends GameObject {
     audio.play();
     setTimeout(() => {
       // this.SPEED is default value to make the ball move
-      this.stepX = this.SPEED;
-      this.stepY = this.SPEED;
+      this.stepX = this.SPEED * (Math.round(Math.random()) * 2 - 1);
+      this.stepY = this.SPEED * (Math.round(Math.random()) * 2 - 1);
     }, 2000);
   }
 
