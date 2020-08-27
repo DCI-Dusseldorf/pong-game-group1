@@ -130,22 +130,71 @@ body {
   display: none;
 }
 
-.key-notes {
+.key-notes1, .key-notes2, .key-notes3 {
   font-family: monospace;
   color: purple;
   text-shadow: 1px 0 pink, 0 1px pink, -1px 0 pink, 0 -1px pink;
   position: absolute;
   bottom: 0px;
+}
+
+.key-notes2 {
+  font-size: 13px;
   width: 100%;
   text-align: center;
 }
 
-#key-notes-line1 {
+#key-notes2-line1 {
   margin: 0;
 }
 
-#key-notes-line2 {
+#key-notes2-line2 {
   margin: 3px 0 10px 103px;
+}
+
+.key-notes1 {
+  left: 0px;
+}
+
+.key-notes3 {
+  right: 0px;
+}
+
+.arrow, .buttons {
+  display: inline;
+  position: absolute;
+}
+
+.key-notes1 div.arrow {
+  left: 0px;
+  bottom: 21px;
+}
+
+.key-notes1 div.buttons {
+  left: 7px;
+  bottom: 10px;
+}
+
+.key-notes3 div.arrow {
+  right: 0px;
+  bottom: 21px;
+}
+
+.key-notes3 div.buttons {
+  right: 7px;
+  bottom: 10px;
+}
+
+.buttons p {
+  font-size: 16px;
+  margin: 0;
+  display: inline;
+}
+
+.arrow p {
+  font-size: 70px;
+  margin: 0;
+  display: inline;
 }
 
 .pause-icon {
