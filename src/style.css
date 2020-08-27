@@ -136,6 +136,7 @@ body {
   text-shadow: 1px 0 pink, 0 1px pink, -1px 0 pink, 0 -1px pink;
   position: absolute;
   bottom: 0px;
+  z-index: -999;
 }
 
 .key-notes2 {
