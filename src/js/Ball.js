@@ -8,12 +8,16 @@ class Ball extends GameObject {
     this.playlist = [...Array(soundsAmount)].map(
       (item, index) => "sounds/ow/" + index + ".mp3"
     );
+    this.initDefaultSpeed();
   }
 
-  SPEED = 7;
-  stepY = this.SPEED * (Math.round(Math.random()) * 2 - 1);
-  stepX = this.SPEED * (Math.round(Math.random()) * 2 - 1);
   ACCELERATOR = 1.04;
+  SPEED = 7;
+
+  initDefaultSpeed() {
+    this.stepX = this.SPEED * (Math.round(Math.random()) * 2 - 1);
+    this.stepY = this.SPEED * (Math.round(Math.random()) * 2 - 1);
+  }
 
   reset() {
     // 0 value to stop the ball
@@ -25,9 +29,7 @@ class Ball extends GameObject {
     this.left = this.elementRect.left;
     this.playFailAudio();
     setTimeout(() => {
-      // this.SPEED is default value to move the ball
-      this.stepX = this.SPEED * (Math.round(Math.random()) * 2 - 1);
-      this.stepY = this.SPEED * (Math.round(Math.random()) * 2 - 1);
+      this.initDefaultSpeed();
     }, 2000);
   }
 
