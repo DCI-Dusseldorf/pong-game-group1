@@ -19,7 +19,7 @@ class Ball extends GameObject {
     this.stepY = this.SPEED * (Math.round(Math.random()) * 2 - 1);
   }
 
-  reset() {
+  resetState() {
     // 0 value to stop the ball
     this.stepX = 0;
     this.stepY = 0;
@@ -43,15 +43,26 @@ class Ball extends GameObject {
   }
 
   changeDirection(leftGk, rightGk) {
-    if (this.top + this.radius > window.innerHeight) {
-      this.footBall.play();
-      this.stepY = -Math.abs(this.stepY);
-    }
-    if (this.top + this.stepY < this.radius) {
+    this.bounceTop();
+    this.bounceBottom();
+    this.bounceLeftGk(leftGk);
+    this.bounceRightGk(rightGk);
+  }
+
+  bounceTop() {
+    if (this.top - this.radius < 0) {
+      debugger;
       this.footBall.play();
       this.stepY = Math.abs(this.stepY);
     }
-
+  }
+  bounceBottom() {
+    if (this.bottom - this.radius > window.innerHeight) {
+      this.footBall.play();
+      this.stepY = -Math.abs(this.stepY);
+    }
+  }
+  bounceLeftGk(leftGk) {
     if (
       leftGk.top < this.bottom - this.radius &&
       leftGk.right > this.left - this.radius &&
@@ -61,7 +72,9 @@ class Ball extends GameObject {
       this.stepX = Math.abs(this.stepX);
       this.speedUp(this.ACCELERATOR);
     }
+  }
 
+  bounceRightGk(rightGk) {
     if (
       rightGk.left < this.right - this.radius &&
       rightGk.top < this.bottom - this.radius &&
@@ -76,13 +89,13 @@ class Ball extends GameObject {
   checkCollisionAndUpdateScore(score) {
     if (this.right - this.radius - this.radius > window.innerWidth) {
       score.addLeftScore();
-      this.reset();
+      this.resetState();
     }
 
     if (this.left + this.radius < this.radius) {
       this.stepX = Math.abs(this.stepX);
       score.addRightScore();
-      this.reset();
+      this.resetState();
     }
   }
 
