@@ -1,4 +1,15 @@
 class Ball extends GameObject {
+  constructor(selector) {
+    super(selector);
+    this.footBall = new Audio("sounds/ball-football.wav");
+    this.basketBall = new Audio("sounds/ball-basketball.wav");
+    this.failAudio = new Audio();
+    let soundsAmount = 47;
+    this.playlist = [...Array(soundsAmount)].map(
+      (item, index) => "sounds/ow/" + index + ".mp3"
+    );
+  }
+
   SPEED = 7;
   stepY = this.SPEED * (Math.round(Math.random()) * 2 - 1);
   stepX = this.SPEED * (Math.round(Math.random()) * 2 - 1);
@@ -12,27 +23,30 @@ class Ball extends GameObject {
     this.right = this.elementRect.right;
     this.bottom = this.elementRect.bottom;
     this.left = this.elementRect.left;
-    let audio = new Audio(
-      "sounds/ow/" + Math.floor(Math.random() * 47) + ".mp3"
-    );
-    audio.play();
+    this.playFailAudio();
     setTimeout(() => {
-      // this.SPEED is default value to make the ball move
+      // this.SPEED is default value to move the ball
       this.stepX = this.SPEED * (Math.round(Math.random()) * 2 - 1);
       this.stepY = this.SPEED * (Math.round(Math.random()) * 2 - 1);
     }, 2000);
   }
 
-  changeDirection(leftGk, rightGk) {
-    let footBall = new Audio("sounds/ball-football.wav");
-    let basketBall = new Audio("sounds/ball-basketball.wav");
+  playFailAudio() {
+    this.failAudio.src = this.getRandomSoundPath();
+    this.failAudio.play();
+  }
 
+  getRandomSoundPath() {
+    return this.playlist[Math.floor(Math.random() * this.playlist.length)];
+  }
+
+  changeDirection(leftGk, rightGk) {
     if (this.top + this.radius > window.innerHeight) {
-      footBall.play();
+      this.footBall.play();
       this.stepY = -Math.abs(this.stepY);
     }
     if (this.top + this.stepY < this.radius) {
-      footBall.play();
+      this.footBall.play();
       this.stepY = Math.abs(this.stepY);
     }
 
@@ -41,7 +55,7 @@ class Ball extends GameObject {
       leftGk.right > this.left - this.radius &&
       leftGk.bottom > this.top - this.radius
     ) {
-      basketBall.play();
+      this.basketBall.play();
       this.stepX = Math.abs(this.stepX);
       this.speedUp(this.ACCELERATOR);
     }
@@ -51,7 +65,7 @@ class Ball extends GameObject {
       rightGk.top < this.bottom - this.radius &&
       rightGk.bottom > this.top - this.radius
     ) {
-      basketBall.play();
+      this.basketBall.play();
       this.stepX = -Math.abs(this.stepX);
       this.speedUp(this.ACCELERATOR);
     }
@@ -63,7 +77,7 @@ class Ball extends GameObject {
       this.reset();
     }
 
-    if (this.left +this.radius < this.radius) {
+    if (this.left + this.radius < this.radius) {
       this.stepX = Math.abs(this.stepX);
       score.addRightScore();
       this.reset();
