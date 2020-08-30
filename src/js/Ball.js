@@ -4,7 +4,7 @@ class Ball extends GameObject {
     this.footBall = new Audio("sounds/ball-football.wav");
     this.basketBall = new Audio("sounds/ball-basketball.wav");
     this.failAudio = new Audio();
-    let soundsAmount = 47;
+    let soundsAmount = 37;
     this.playlist = [...Array(soundsAmount)].map(
       (item, index) => "sounds/ow/" + index + ".mp3"
     );
